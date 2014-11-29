@@ -8,6 +8,23 @@ var CatalogStore = require('../stores/catalog-store.js');
 var AddToCart = require('./addtocart.js');
 
 /**
+ * Build React nodes from given array of objects.
+ * @param {Object[]} catalogItems - The array of objects to build React nodes from.
+ */
+function buildItems(catalogItems) {
+    var items = catalogItems.map(function(item) {
+        return (
+            <tr key={item._id}>
+                <td>{item.title}</td>
+                <td>${item.cost}</td>
+                <td><AddToCart item={item}/></td>
+            </tr>
+        );
+    });
+    return items;
+}
+
+/**
  * Catalog component.
  */
 var Catalog = React.createClass({
@@ -22,15 +39,7 @@ var Catalog = React.createClass({
         this.setState({items: data});
     },
     render: function() {
-        var items = this.state.items.map(function(item) {
-            return (
-                <tr key={item._id}>
-                    <td>{item.title}</td>
-                    <td>{item.cost}</td>
-                    <td><AddToCart item={item}/></td>
-                </tr>
-            );
-        });
+        var items = buildItems(this.state.items);
         return (
             <table className="table table-condensed table-hover table-responsive table-striped">
                 <tbody>
